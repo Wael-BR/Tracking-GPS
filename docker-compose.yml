@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: timescale/timescaledb:latest-pg16
+    container_name: gps-trace-postgres
+    environment:
+      POSTGRES_USER: gps_user
+      POSTGRES_PASSWORD: gps_password_123
+      POSTGRES_DB: gps_trace_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - gps-trace-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gps_user -d gps_trace_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: gps-trace-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@gps-trace.local
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - gps-trace-network
+
+volumes:
+  postgres_data:
+
+networks:
+  gps-trace-network:
+    driver: bridge

@@ -1,0 +1,63 @@
+<div class="order-management">
+  <div class="header">
+    <h2>Gestion des Commandes</h2>
+    <button (click)="openForm()" class="btn-primary">+ Créer Commande</button>
+  </div>
+  <div class="form-modal" *ngIf="showForm">
+    <div class="form-content">
+      <h3>{{ isEditMode ? 'Modifier' : 'Créer' }} Commande</h3>
+      <input type="text" [(ngModel)]="formData.numeroCommande" placeholder="Numéro de commande" required>
+      <input type="text" [(ngModel)]="formData.clientNom" placeholder="Nom client" required>
+      <input type="email" [(ngModel)]="formData.clientEmail" placeholder="Email client">
+      <input type="text" [(ngModel)]="formData.clientTelephone" placeholder="Téléphone">
+      <input type="text" [(ngModel)]="formData.adresseDepart" placeholder="Adresse de départ">
+      <input type="text" [(ngModel)]="formData.adresseArrivee" placeholder="Adresse d'arrivée">
+
+      <select [(ngModel)]="formData.vehiculeId">
+        <option value="">Sélectionner un véhicule</option>
+        <option *ngFor="let v of vehicles" [value]="v.id">{{ v.immatriculation }}</option>
+      </select>
+
+      <select [(ngModel)]="formData.statut">
+        <option value="en_attente">En attente</option>
+        <option value="assignee">Assignée</option>
+        <option value="en_cours">En cours</option>
+        <option value="livree">Livrée</option>
+      </select>
+
+      <input type="number" [(ngModel)]="formData.poids" placeholder="Poids (kg)">
+      <input type="text" [(ngModel)]="formData.descriptionColis" placeholder="Description">
+
+      <div class="form-actions">
+        <button (click)="saveOrder()" class="btn-success">Enregistrer</button>
+        <button (click)="closeForm()" class="btn-cancel">Annuler</button>
+      </div>
+    </div></div>
+  <table class="orders-table">
+    <thead>
+    <tr>
+      <th>Commande</th>
+      <th>Client</th>
+      <th>Véhicule</th>
+      <th>Départ</th>
+      <th>Arrivée</th>
+      <th>Statut</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let o of orders">
+      <td><strong>{{ o.numeroCommande }}</strong></td>
+      <td>{{ o.clientNom }}</td>
+      <td>{{ getVehicleName(o.vehiculeId) }}</td>
+      <td>{{ o.adresseDepart }}</td>
+      <td>{{ o.adresseArrivee }}</td>
+      <td><span class="badge" [ngClass]="o.statut">{{ o.statut }}</span></td>
+      <td>
+        <button (click)="openForm(o)" class="btn-edit">Modifier</button>
+        <button (click)="deleteOrder(o.id)" class="btn-delete">Supprimer</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

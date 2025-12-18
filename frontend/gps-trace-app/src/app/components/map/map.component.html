@@ -1,0 +1,40 @@
+<div class="map-container">
+  <div #mapContainer class="map"></div>
+
+  <div class="map-sidebar">
+    <h2>Véhicules en direct</h2>
+
+    <div class="vehicle-list">
+      <div
+        *ngFor="let v of vehicles"
+        class="vehicle-item"
+        [class.selected]="selectedVehicle?.id === v.id"
+        (click)="centerOnVehicle(v)">
+
+        <div class="vehicle-color" [style.background-color]="v.couleurMarqueur || '#FF0000'"></div>
+
+        <div class="vehicle-info">
+          <h4>{{ v.immatriculation }}</h4>
+          <p class="conducteur">{{ v.conducteurNom || 'N/A' }}</p>
+          <p class="speed">
+            <span class="badge-speed">{{ (v.derniereVitesse || 0) | number:'1.0-0' }} km/h</span>
+          </p>
+          <p class="status">
+            <span class="badge" [ngClass]="v.statut">{{ v.statut }}</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="map-info" *ngIf="selectedVehicle">
+      <h3>{{ selectedVehicle.immatriculation }}</h3>
+      <hr>
+      <p><strong>Conducteur:</strong> {{ selectedVehicle.conducteurNom }}</p>
+      <p><strong>Téléphone:</strong> {{ selectedVehicle.conducteurTelephone || '-' }}</p>
+      <p><strong>Vitesse:</strong> {{ (selectedVehicle.derniereVitesse || 0) | number:'1.2-2' }} km/h</p>
+      <p><strong>Latitude:</strong> {{ selectedVehicle.derniereLatitude | number:'1.6-6' }}</p>
+      <p><strong>Longitude:</strong> {{ selectedVehicle.derniereLongitude | number:'1.6-6' }}</p>
+      <p><strong>MAJ:</strong> {{ selectedVehicle.derniereMisAJour | date:'medium' }}</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,50 @@
+<div class="dashboard-container">
+  <h1>Tableau de Bord GPS-Trace</h1>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Véhicules actifs</div>
+      <div class="stat-value">{{ vehiculesActifs }}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">En mouvement</div>
+      <div class="stat-value">{{ vehiculesEnCours }}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Commandes en attente</div>
+      <div class="stat-value">{{ commandesEnAttente }}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Commandes en cours</div>
+      <div class="stat-value">{{ commandesEnCours }}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Commandes livrées</div>
+      <div class="stat-value">{{ commandesLivrees }}</div>
+    </div>
+  </div>
+
+  <div class="vehicles-section">
+    <h2>Véhicules</h2>
+    <table class="vehicles-table">
+      <thead>
+      <tr>
+        <th>Immatriculation</th>
+        <th>Conducteur</th>
+        <th>Statut</th>
+        <th>Vitesse</th>
+        <th>MAJ</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let v of vehicles">
+        <td><strong>{{ v.immatriculation }}</strong></td>
+        <td>{{ v.conducteurNom || '-' }}</td>
+        <td><span class="badge" [ngClass]="v.statut">{{ v.statut }}</span></td>
+        <td>{{ (v.derniereVitesse || 0) | number:'1.0-0' }} km/h</td>
+        <td>{{ v.derniereMisAJour | date:'short' }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

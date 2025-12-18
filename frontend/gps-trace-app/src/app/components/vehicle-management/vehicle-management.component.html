@@ -1,0 +1,54 @@
+<div class="vehicle-management">
+  <div class="header">
+    <h2>Gestion des Véhicules</h2>
+    <button (click)="openForm()" class="btn-primary">+ Ajouter Véhicule</button>
+  </div>
+
+  <div class="form-modal" *ngIf="showForm">
+    <div class="form-content">
+      <h3>{{ isEditMode ? 'Modifier' : 'Créer' }} Véhicule</h3>
+
+      <input type="text" [(ngModel)]="formData.immatriculation" placeholder="Immatriculation" required>
+      <input type="text" [(ngModel)]="formData.marque" placeholder="Marque">
+      <input type="text" [(ngModel)]="formData.modele" placeholder="Modèle">
+      <select [(ngModel)]="formData.type">
+        <option value="camion">Camion</option>
+        <option value="voiture">Voiture</option>
+        <option value="moto">Moto</option>
+      </select>
+      <input type="text" [(ngModel)]="formData.conducteurNom" placeholder="Nom Conducteur">
+      <input type="color" [(ngModel)]="formData.couleurMarqueur" title="Couleur du marqueur">
+
+      <div class="form-actions">
+        <button (click)="saveVehicle()" class="btn-success">Enregistrer</button>
+        <button (click)="closeForm()" class="btn-cancel">Annuler</button>
+      </div>
+    </div>
+  </div>
+
+  <table class="vehicles-table">
+    <thead>
+    <tr>
+      <th>Immatriculation</th>
+      <th>Marque/Modèle</th>
+      <th>Type</th>
+      <th>Conducteur</th>
+      <th>Statut</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let v of vehicles">
+      <td><strong>{{ v.immatriculation }}</strong></td>
+      <td>{{ v.marque }} {{ v.modele }}</td>
+      <td>{{ v.type }}</td>
+      <td>{{ v.conducteurNom || '-' }}</td>
+      <td><span class="badge" [ngClass]="v.statut">{{ v.statut }}</span></td>
+      <td>
+        <button (click)="openForm(v)" class="btn-edit">Modifier</button>
+        <button (click)="deleteVehicle(v.id)" class="btn-delete">Supprimer</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
